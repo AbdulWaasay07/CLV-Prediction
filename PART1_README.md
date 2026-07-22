@@ -70,15 +70,29 @@ The pandas dataframe columns are rigidly cast to match the SQLAlchemy `models.py
 
 ## 3\. Exploratory Data Analysis (EDA) Engine
 
-Once data is clean, the business needs to see it. We built a React Dashboard (`Dashboard.jsx`) that visualizes the state of the business using `recharts`. The frontend pulls from 5 specific `/api/eda/` endpoints that perform advanced SQL aggregations on the fly.
+Once data is clean, the business needs to see it. We built an interactive React Dashboard (`Dashboard.jsx`) that visualizes the state of the business using the `recharts` library. The EDA engine is designed to instantly compute business intelligence from raw data. The frontend fetches data concurrently using `Promise.all()` from 5 specific `/api/eda/` endpoints that perform advanced SQL aggregations on the fly using SQLAlchemy in FastAPI.
 
-### The 5 EDA Endpoints:
+### Detailed EDA Implementation:
 
-1. **`/api/eda/kpis`**: Calculates top-level metrics. It queries the `customers` table for total users, and `transactions` for total revenue and average transaction value.
-2. **`/api/eda/revenue-trends`**: Groups transactions by month (`DATE\_FORMAT`). It provides a time-series line chart of revenue growth.
-3. **`/api/eda/customer-locations`**: Performs a `GROUP BY location` on the customers table to feed a geographic bar chart.
-4. **`/api/eda/marketing-clv`**: The most complex endpoint. It joins 3 tables: `marketing\_campaigns`, `customers`, and `transactions`. It groups by marketing `channel` (e.g., Email, Social) and calculates the Average Spend of customers acquired through that channel.
-5. **`/api/eda/support-csat`**: Groups by ticket `severity` (High/Medium/Low) and calculates the average `csat\_score` to show how different problem severities impact customer happiness.
+1. **`/api/eda/kpis` (Executive Summary)**: 
+   * **Concept:** Calculates top-level baseline metrics required by stakeholders.
+   * **Implementation:** It queries the `customers` table for `total_customers`, and the `transactions` table for `total_revenue`. It calculates a 30-Day MRR by filtering transactions from the last 30 days, and determines a historic CLV baseline.
+   
+2. **`/api/eda/revenue-trends` (Time-Series Analysis)**: 
+   * **Concept:** Visualizes how revenue changes over time to identify seasonality or growth trends.
+   * **Implementation:** Performs a `GROUP BY DATE(transaction_date)` SQL aggregation. The frontend maps this array into a Recharts `<LineChart>`, plotting `revenue` over `date` with tooltips for interactive hovering.
+   
+3. **`/api/eda/customer-locations` (Geographic Density)**: 
+   * **Concept:** Identifies where the customer base is physically located.
+   * **Implementation:** Performs a `COUNT()` on the `customers` table grouped by `location`. Rendered as a horizontal `<BarChart>` to accommodate long city names on the Y-axis.
+   
+4. **`/api/eda/marketing-clv` (Channel ROI)**: 
+   * **Concept:** Measures which marketing channel brings in the most valuable customers.
+   * **Implementation:** This is a complex endpoint executing an inner join across 3 tables: `marketing_campaigns`, `customers`, and `transactions`. It groups by marketing `channel` (e.g., Email, Social, Search) and calculates the `Average Spend` (`AVG(amount)`) of customers acquired through that channel. Visualized as a green `<BarChart>`.
+   
+5. **`/api/eda/support-csat` (Friction vs. Satisfaction)**: 
+   * **Concept:** Analyzes the relationship between support ticket volume, ticket severity, and customer satisfaction (CSAT).
+   * **Implementation:** Groups by ticket `severity` (High/Medium/Low), calculates the `COUNT()` of tickets (volume), and the `AVG(csat_score)`. The UI utilizes a `<ComposedChart>` to overlay a line graph (Avg CSAT) on top of a bar chart (Ticket Volume) using a dual Y-axis layout.
 
 \---
 
@@ -140,9 +154,10 @@ The pipeline categorizes features into 6 distinct groups. Here is exactly how th
 23. **`predicted\_clv`**: An initial heuristic baseline calculation: `avg\_order\_value` \* `purchases\_per\_month` \* `12 months` \* `30% profit margin`.
 24. **`customer\_segment`**: A categorical label based on health thresholds (e.g., "Champion", "At Risk", "Active", "Hibernating").
 
-### Final Output \& Ready for Part 2
+### Final Output
 
 Once all calculations are performed in Pandas, the script handles `NaN` and `Inf` cleanup (replacing them with `0`) and executes a massive `bulk\_insert\_mappings` via SQLAlchemy back into the `customer\_features` MySQL table.
 
-This completely numerical, highly contextual 24-dimension table is exactly what the Machine Learning models in **Phase 5** will use to train the predictive AI.
+This completely numerical, highly contextual 24-dimension table is exactly what the Machine Learning models use to train the predictive AI.
+
 
