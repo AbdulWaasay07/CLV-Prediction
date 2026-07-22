@@ -47,8 +47,6 @@ d:\churn_Prediction\
 │   │   └── App.css           # Styling
 │   └── package.json          # Node dependencies
 ├── generate_mock_data.py     # Python script to generate synthetic test datasets
-├── generate_report_pdf.py    # Python script generating the Project Report PDF
-├── generate_source_code_pdf.py # Python script generating the Source Code PDF
 └── README.md                 # This documentation file
 ```
 
