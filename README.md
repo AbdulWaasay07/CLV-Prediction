@@ -1,4 +1,4 @@
-# Customer Churn Prediction System
+# Customer Lifetime Value(CLV) Prediction System
 
 A full-stack, data-driven machine learning platform designed to ingest raw, noisy customer data across various touchpoints and translate it into actionable business intelligence. The system employs advanced data cleaning, automated feature engineering, and robust machine learning models to identify at-risk customers and provide deterministic business recommendations.
 
