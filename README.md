@@ -2,7 +2,7 @@
 
 A full-stack, data-driven machine learning platform designed to ingest raw, noisy customer data across various touchpoints and translate it into actionable business intelligence. The system employs advanced data cleaning, automated feature engineering, and robust machine learning models to identify at-risk customers and provide deterministic business recommendations.
 
-## 🌟 Key Features
+## Key Features
 
 *   **Robust Data Ingestion & Cleaning:** Reads raw CSV files, handles missing values dynamically, applies domain-specific standardizations, and intelligently identifies extreme outliers (Winsorization).
 *   **Automated Feature Engineering:** Flattens 6 relational tables into a robust 24-column feature store containing RFM metrics (Recency, Frequency, Monetary), behavioral signals, marketing interactions, and support friction indicators.
@@ -14,7 +14,7 @@ A full-stack, data-driven machine learning platform designed to ingest raw, nois
 
 ---
 
-## 🏗 System Architecture & Tech Stack
+## System Architecture & Tech Stack
 
 The platform follows a modular, decoupled architecture:
 
@@ -25,7 +25,7 @@ The platform follows a modular, decoupled architecture:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 d:\churn_Prediction\
@@ -52,7 +52,7 @@ d:\churn_Prediction\
 
 ---
 
-## 🚀 Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 *   **Python 3.9+** (3.11 recommended)
@@ -86,7 +86,7 @@ npm run dev
 
 ---
 
-## 📘 Usage Guide
+## Usage Guide
 
 ### 1. Generating Mock Data
 To test the platform's robustness, you can generate synthetic datasets containing mathematically correlated behaviors and deliberate noise (missing values, typos, outliers).
