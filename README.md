@@ -116,7 +116,7 @@ Switch to the **AI & Recommendations** tab (ML Dashboard) to execute the pipelin
 
 ---
 
-## 📄 Documentation Generation
+## Documentation Generation
 
 The project includes built-in scripts to generate professional PDF documentation using `fpdf2`.
 *   To generate the 20+ page detailed source code breakdown: `python generate_source_code_pdf.py`
